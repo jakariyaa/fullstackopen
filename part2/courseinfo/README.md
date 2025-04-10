@@ -13,7 +13,7 @@ Follow these steps to run the project:
 
 ```bash
 git clone https://github.com/jakariyaa/fullstackopen.git
-cd fullstackopen/part1/courseinfo
+cd fullstackopen/part2/courseinfo
 ```
 
 ### 2. Install dependencies
