@@ -1,12 +1,43 @@
-# React + Vite
+## 📦 Requirements
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Before you start, make sure you have:
 
-Currently, two official plugins are available:
+- [Node.js](https://nodejs.org/) installed (v16 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 How to Run
 
-## Expanding the ESLint configuration
+Follow these steps to run the project:
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/jakariyaa/fullstackopen.git
+cd fullstackopen/part2/countries
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+This will start the site at:
+
+```
+http://localhost:5173/
+```
+
+(You will see the link in your terminal.)
+
+## 🛠 Scripts
+
+- `npm run dev` – Start the development server
+- `npm run build` – Create production build
+- `npm run preview` – Preview the build
