@@ -16,6 +16,10 @@ const App = () => {
     setQuery(event.target.value)
   }
 
+  const handleShowClick = (name) => {
+    setQuery(name)
+  }
+
   const countriesToShow = countries.filter(country =>
     country.name.common.toLowerCase().includes(query.toLowerCase()))
 
@@ -25,7 +29,7 @@ const App = () => {
         find countries <input value={query} onChange={handleQueryChange} />
       </div>
       <div>
-        <Countries countries={countriesToShow} />
+        <Countries countries={countriesToShow} handleShowClick={handleShowClick} />
       </div>
     </div>
   )
