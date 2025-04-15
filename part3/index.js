@@ -4,7 +4,11 @@ const app = express()
 
 app.use(express.json())
 
-app.use(morgan('tiny'))
+morgan.token('req-body', (request) => {
+  return request.body ? JSON.stringify(request.body) : ''
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body'))
 
 let persons = [
   {
