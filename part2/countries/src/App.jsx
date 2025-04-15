@@ -9,7 +9,9 @@ const App = () => {
   useEffect(() => {
     axios
       .get('https://studies.cs.helsinki.fi/restcountries/api/all')
-      .then(response => { setCountries(response.data) })
+      .then(response => {
+        setCountries(response.data)
+      })
   }, [])
 
   const handleQueryChange = (event) => {
