@@ -1,0 +1,17 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "Fullstackopen Part 4",
+  "license": "MIT",
+  "author": "Jakariya Abbas",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
