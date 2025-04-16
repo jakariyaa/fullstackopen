@@ -1,0 +1,3 @@
+[submodule "part3/fullstack-phonebook"]
+	path = part3/fullstack-phonebook
+	url = https://github.com/jakariyaa/fullstackopen-phonebook.git

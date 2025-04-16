@@ -40,11 +40,11 @@ const App = () => {
             setNotifMsg({
               type: 'error',
               content: `Information of ${foundPerson.name} has already been deleted. ` +
-                `Error code: ${error}`
+                `Error: ${error.message}`
             })
             setTimeout(() => {
               setNotifMsg(null)
-            }, 5000)
+            }, 3000)
           })
         setNotifMsg({
           type: 'successful',
@@ -52,13 +52,22 @@ const App = () => {
         })
         setTimeout(() => {
           setNotifMsg(null)
-        }, 5000)
+        }, 3000)
       }
     } else {
       personService
         .create(newPersonObj)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+        }).catch(error => {
+          setNotifMsg({
+            type: 'error',
+            content: 'Contact not Added. Fill all the details.' +
+              `Error ${error.message}`
+          })
+          setTimeout(() => {
+            setNotifMsg(null)
+          }, 3000)
         })
       setNotifMsg({
         type: 'successful',
@@ -66,7 +75,7 @@ const App = () => {
       })
       setTimeout(() => {
         setNotifMsg(null)
-      }, 5000)
+      }, 3000)
     }
     setNewName('')
     setNewNumber('')
@@ -76,8 +85,8 @@ const App = () => {
     if (window.confirm(`Delete ${name} ?`)) {
       personService
         .remove(id)
-        .then(deletedPerson => {
-          setPersons(persons.filter(person => person.id !== deletedPerson.id))
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
         }).catch(error => {
           setNotifMsg({
             type: 'error',
@@ -86,7 +95,7 @@ const App = () => {
           })
           setTimeout(() => {
             setNotifMsg(null)
-          }, 5000)
+          }, 3000)
         })
       setNotifMsg({
         type: 'successful',
@@ -94,7 +103,7 @@ const App = () => {
       })
       setTimeout(() => {
         setNotifMsg(null)
-      }, 5000)
+      }, 3000)
     }
   }
 
