@@ -40,7 +40,7 @@ const App = () => {
             setNotifMsg({
               type: 'error',
               content: `Information of ${foundPerson.name} has already been deleted. ` +
-                `Error: ${error.message}`
+                `Error: ${error.response.data.error}`
             })
             setTimeout(() => {
               setNotifMsg(null)
@@ -62,12 +62,11 @@ const App = () => {
         }).catch(error => {
           setNotifMsg({
             type: 'error',
-            content: 'Contact not Added. Fill all the details.' +
-              `Error ${error.message}`
+            content: `Not Added. ${error.response.data.error}`
           })
           setTimeout(() => {
             setNotifMsg(null)
-          }, 3000)
+          }, 5000)
         })
       setNotifMsg({
         type: 'successful',
@@ -91,11 +90,11 @@ const App = () => {
           setNotifMsg({
             type: 'error',
             content: `Information of ${name} has already been deleted. ` +
-              `Error code: ${error}`
+              `Error: ${error.response.data.error}`
           })
           setTimeout(() => {
             setNotifMsg(null)
-          }, 3000)
+          }, 5000)
         })
       setNotifMsg({
         type: 'successful',
