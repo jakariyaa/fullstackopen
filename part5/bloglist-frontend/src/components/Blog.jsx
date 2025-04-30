@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, onDelete }) => {
+const Blog = ({ blog, user, handleLike, onDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
-  const [blogLikes, setBlogLikes] = useState(blog.likes)
 
   const blogStyle = {
     padding: 5,
@@ -13,23 +12,15 @@ const Blog = ({ blog, user, onDelete }) => {
     borderRadius: 5
   }
 
-  const increaseLike = async () => {
-    blog.likes = blog.likes + 1
-    const response = await blogService.update(
-      blog.id, blog
-    )
-    setBlogLikes(blog.likes)
-  }
-
   if (showDetails) {
     return (
-      <div style={blogStyle}>
+      <div className='blog' style={blogStyle}>
         <div>
           {blog.title} {blog.author}
           <button onClick={() => setShowDetails(false)}>hide</button>
         </div>
         <div>{blog.url}</div>
-        <div>likes {blogLikes} <button onClick={increaseLike}>like</button></div>
+        <div>likes {blog.likes} <button onClick={() => handleLike(blog)}>like</button></div>
         <div>{blog.user.name}</div>
         {user.username === blog.user.username &&
           <button onClick={() => onDelete(blog)}>remove</button>}
@@ -38,13 +29,20 @@ const Blog = ({ blog, user, onDelete }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
         {blog.title} {blog.author}
         <button onClick={() => setShowDetails(true)}>view</button>
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default Blog

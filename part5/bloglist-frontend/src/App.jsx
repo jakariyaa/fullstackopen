@@ -74,6 +74,14 @@ const App = () => {
     setBlogs(blogs.concat(response))
   }
 
+  const handleLike = async (blog) => {
+    blog.likes = blog.likes + 1
+    const response = await blogService.update(
+      blog.id, blog
+    )
+    setBlogs(blogs.map(b => b.id === blog.id ? response : b))
+  }
+
   const handleDeleteBlog = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       const response = await blogService.remove(blog.id)
@@ -116,12 +124,12 @@ const App = () => {
       {notif && <Notification message={notif.message} type={notif.type} />}
       <div>{user.name} is logged in <button
         onClick={handleLogout}>Log Out</button>
-      <Togglable buttonLabel='create new blog'>
-        <BlogForm createBlog={handleAddBlog} />
-      </Togglable>
-      {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} onDelete={handleDeleteBlog} />
-      )}
+        <Togglable buttonLabel='create new blog'>
+          <BlogForm createBlog={handleAddBlog} />
+        </Togglable>
+        {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
+          <Blog key={blog.id} blog={blog} user={user} handleLike={handleLike} onDelete={handleDeleteBlog} />
+        )}
       </div>
     </div>
   )
