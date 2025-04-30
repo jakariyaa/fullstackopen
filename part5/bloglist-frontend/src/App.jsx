@@ -45,8 +45,8 @@ const App = () => {
       setPassword('')
     } catch (error) {
       setNotif({
-        message: `wrong username or password`,
-        type: `error`
+        message: 'wrong username or password',
+        type: 'error'
       })
       setTimeout(() => {
         setNotif(null)
@@ -66,7 +66,7 @@ const App = () => {
     const response = await blogService.create(newBlog)
     setNotif({
       message: `a new blog ${response.title} by ${response.author} added`,
-      type: `success`
+      type: 'success'
     })
     setTimeout(() => {
       setNotif(null)
@@ -80,7 +80,7 @@ const App = () => {
       if (response.status === 204) {
         setNotif({
           message: `blog ${blog.title} by ${blog.author} removed`,
-          type: `success`
+          type: 'success'
         })
         setTimeout(() => {
           setNotif(null)
@@ -116,12 +116,12 @@ const App = () => {
       {notif && <Notification message={notif.message} type={notif.type} />}
       <div>{user.name} is logged in <button
         onClick={handleLogout}>Log Out</button>
-        <Togglable buttonLabel='create new blog'>
-          <BlogForm createBlog={handleAddBlog} />
-        </Togglable>
-        {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} user={user} onDelete={handleDeleteBlog} />
-        )}
+      <Togglable buttonLabel='create new blog'>
+        <BlogForm createBlog={handleAddBlog} />
+      </Togglable>
+      {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} user={user} onDelete={handleDeleteBlog} />
+      )}
       </div>
     </div>
   )

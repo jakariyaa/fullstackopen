@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const Notification = ({ message, type }) => {
   return (
     <h3 className={type === 'success'
@@ -5,6 +7,11 @@ const Notification = ({ message, type }) => {
       {message}
     </h3>
   )
+}
+
+Notification.propTypes = {
+  message: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
 }
 
 export default Notification
