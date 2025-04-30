@@ -18,3 +18,24 @@
   border-color: #d9081d;
   color: #721c24;
 }
+
+button {
+  background-color: #4682b4;
+  color: white;
+  padding: 5px 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  box-shadow: #309af1 0px 0px 5px;
+}
+
+input {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

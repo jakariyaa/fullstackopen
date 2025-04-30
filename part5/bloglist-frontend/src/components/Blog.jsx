@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, onDelete }) => {
+const Blog = ({ blog, user, onDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
   const [blogLikes, setBlogLikes] = useState(blog.likes)
 
   const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
+    padding: 5,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    margin: 5,
+    borderRadius: 5
   }
 
   const increaseLike = async () => {
@@ -31,7 +31,8 @@ const Blog = ({ blog, onDelete }) => {
         <div>{blog.url}</div>
         <div>likes {blogLikes} <button onClick={increaseLike}>like</button></div>
         <div>{blog.user.name}</div>
-        <button onClick={() => onDelete(blog)}>remove</button>
+        {user.username === blog.user.username &&
+          <button onClick={() => onDelete(blog)}>remove</button>}
       </div>
     )
   }

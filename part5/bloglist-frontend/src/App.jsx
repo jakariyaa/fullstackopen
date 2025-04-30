@@ -7,7 +7,6 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [notif, setNotif] = useState(null)
@@ -121,7 +120,7 @@ const App = () => {
           <BlogForm createBlog={handleAddBlog} />
         </Togglable>
         {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} onDelete={handleDeleteBlog} />
+          <Blog key={blog.id} blog={blog} user={user} onDelete={handleDeleteBlog} />
         )}
       </div>
     </div>
