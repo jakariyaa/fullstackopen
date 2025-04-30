@@ -75,6 +75,22 @@ const App = () => {
     setBlogs(blogs.concat(response))
   }
 
+  const handleDeleteBlog = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      const response = await blogService.remove(blog.id)
+      if (response.status === 204) {
+        setNotif({
+          message: `blog ${blog.title} by ${blog.author} removed`,
+          type: `success`
+        })
+        setTimeout(() => {
+          setNotif(null)
+        }, 7000)
+      }
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
+  }
+
   if (!user) {
     return (
       <div>
@@ -105,7 +121,7 @@ const App = () => {
           <BlogForm createBlog={handleAddBlog} />
         </Togglable>
         {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} onDelete={handleDeleteBlog} />
         )}
       </div>
     </div>
