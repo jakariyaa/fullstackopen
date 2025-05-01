@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { createBlog, loginWith } from './helper';
 
 test.describe('Blog app', () => {
   test.beforeEach(async ({ page, request }) => {
@@ -24,9 +25,7 @@ test.describe('Blog app', () => {
 
   test.describe('Login', () => {
     test('succeeds with correct credentials', async ({ page }) => {
-      await page.getByTestId('username').fill('testuser')
-      await page.getByTestId('password').fill('newpassword1233')
-      await page.getByRole('button', { name: 'Log In' }).click()
+      await loginWith(page, 'testuser', 'newpassword1233')
 
       const successMessage = await page.locator('.notification.success')
       await expect(successMessage).toHaveText(`Welcome! testuser successfully logged in`)
@@ -34,9 +33,7 @@ test.describe('Blog app', () => {
     })
 
     test('fails with wrong credentials', async ({ page }) => {
-      await page.getByTestId('username').fill('testuser')
-      await page.getByTestId('password').fill('wrongpassword')
-      await page.getByRole('button', { name: 'Log In' }).click()
+      await loginWith(page, 'testuser', 'wrongpassword')
 
       const errorMessage = await page.locator('.notification.error')
       await expect(errorMessage).toHaveText('wrong username or password')
@@ -46,17 +43,11 @@ test.describe('Blog app', () => {
 
   test.describe('When logged in', () => {
     test.beforeEach(async ({ page }) => {
-      await page.getByTestId('username').fill('testuser')
-      await page.getByTestId('password').fill('newpassword1233')
-      await page.getByRole('button', { name: 'Log In' }).click()
+      await loginWith(page, 'testuser', 'newpassword1233')
     })
 
     test('A blog can be created', async ({ page }) => {
-      await page.getByTestId('create-new-blog').click()
-      await page.getByTestId('title').fill('My first blog')
-      await page.getByTestId('author').fill('John Doe')
-      await page.getByTestId('url').fill('https://example.com')
-      await page.getByTestId('create').click()
+      await createBlog(page, 'My first blog', 'John Doe', 'https://example.com')
 
       const successMessage = await page.locator('.notification.success')
       await expect(successMessage).toHaveText(`a new blog My first blog by John Doe added`)
@@ -66,18 +57,41 @@ test.describe('Blog app', () => {
     })
 
     test('A blog can be liked', async ({ page }) => {
-
-      await page.getByTestId('create-new-blog').click()
-      await page.getByTestId('title').fill('My first blog')
-      await page.getByTestId('author').fill('John Doe')
-      await page.getByTestId('url').fill('https://example.com')
-      await page.getByTestId('create').click()
+      await createBlog(page)
 
       await page.getByRole('button', { name: 'view' }).click()
       await page.getByRole('button', { name: 'like' }).click()
       await page.getByRole('button', { name: 'like' }).click()
 
       await expect(page.getByText('likes 2')).toBeVisible()
+    })
+
+    test('A blog can be deleted by the creator', async ({ page }) => {
+      await createBlog(page)
+
+      await page.getByRole('button', { name: 'view' }).click()
+      await page.once('dialog', async (dialog) => {
+        expect(dialog.type()).toBe('confirm')
+        await dialog.accept()
+      })
+      await page.getByRole('button', { name: 'remove' }).click()
+      await expect(page.getByText('My first blog John Doe')).not.toBeVisible()
+    })
+
+    test('Only the creator sees the delete button', async ({ page, request }) => {
+      await createBlog(page)
+      await page.getByRole('button', { name: 'Log Out' }).click()
+      await request.post('http://localhost:3003/api/users', {
+        data: {
+          name: 'Another User',
+          username: 'anotheruser',
+          password: 'anotherpassword'
+        }
+      })
+      await loginWith(page, 'anotheruser', 'anotherpassword')
+      await page.getByRole('button', { name: 'view' }).click()
+      const removeButton = page.getByRole('button', { name: 'remove' })
+      await expect(removeButton).not.toBeVisible()
     })
   })
 })
