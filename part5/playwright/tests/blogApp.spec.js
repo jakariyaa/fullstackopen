@@ -42,7 +42,7 @@ test.describe('Blog app', () => {
   })
 
   test.describe('When logged in', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, request }) => {
       await loginWith(page, 'testuser', 'newpassword1233')
     })
 
@@ -92,6 +92,33 @@ test.describe('Blog app', () => {
       await page.getByRole('button', { name: 'view' }).click()
       const removeButton = page.getByRole('button', { name: 'remove' })
       await expect(removeButton).not.toBeVisible()
+    })
+    test('Blogs are displayed in descending order of likes', async ({ page }) => {
+      await createBlog(page, 'First Blog', 'Author One', 'https://first.com')
+      await expect(page.getByText('First Blog Author One')).toBeVisible()
+      await page.getByRole('button', { name: 'cancel' }).click()
+
+      await createBlog(page, 'Second Blog', 'Author Two', 'https://second.com')
+      await expect(page.getByText('Second Blog Author Two')).toBeVisible()
+      await page.getByRole('button', { name: 'cancel' }).click()
+
+      await createBlog(page, 'Third Blog', 'Author Three', 'https://third.com')
+      await expect(page.getByText('Third Blog Author Three')).toBeVisible()
+      await page.getByRole('button', { name: 'cancel' }).click()
+
+      await page.getByRole('button', { name: 'view' }).nth(0).click();
+      await page.getByRole('button', { name: 'like' }).nth(0).click();
+      await expect(page.getByText('likes 1')).toBeVisible();
+
+      await page.getByRole('button', { name: 'view' }).nth(0).click();
+      await page.getByRole('button', { name: 'like' }).nth(1).click();
+      await page.getByRole('button', { name: 'like' }).nth(1).click();
+      await expect(page.getByText('likes 2')).toBeVisible();
+
+      const blogTitles = await page.locator('.blog').allTextContents();
+      expect(blogTitles[0]).toContain('Second Blog Author Two');
+      expect(blogTitles[1]).toContain('First Blog Author One');
+      expect(blogTitles[2]).toContain('Third Blog Author Three');
     })
   })
 })
